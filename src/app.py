@@ -72,50 +72,19 @@ def get_planet():
 
     return jsonify(response_body), 200
 
-# @app.route("/planet/create", methods=["POST"])
-# def create_planet():
-#     planet = Planets(
-#             name=request.form["name"],
-#             climate=request.form["climate"]
-#         )
-#     db.session.add(planet)
-#     db.session.commit()
-#     response_body = {
-#         "msg":"New planet, mate",
-#         "results":  planet
-#     }
-
-#     return jsonify(response_body), 200
-
-@app.route("/planet/create", methods=["POST"])
+@app.route("/planet", methods=['POST'])
 def create_planet():
-    request_body = request.get_json()
-    planet = Planets(
-                    name = request_body['name'],
-                    climate = request_body['climate']
-                )
+    body = json.loads(request.data)
+    planet = Planets(name = body["name"], climate = body["climate"])
     db.session.add(planet)
     db.session.commit()
-    return request_body, 200
-    # return jsonify(request_body), 200
 
-# Endpoint /user
-# @app.route('/user', methods=['GET', 'POST'])
-# def user():
-#     if request.method == 'GET':
-#         users = User.query.all()
-#         results = [user.serialize() for user in users]
-#         response_body = {"message": "ok",
-#                          "total_records": len(results),
-#                          "results": results}
-#         return response_body, 200
-#         # return jsonify(response_body), 200
-#     if request.method == 'POST':
-#         request_body = request.get_json()
+    response_body = {
+        "msg": " The new planet has been created correctly "
+    }
 
+    return jsonify(response_body), 200
 
-
-# this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=False)

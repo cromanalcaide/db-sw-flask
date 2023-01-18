@@ -28,7 +28,7 @@ class Planets(db.Model):
 
     def serialize(self):
         return {
-            "planetID": self.id,
+            "id": self.id,
             "name": self.name,
             "climate": self.climate
         }
